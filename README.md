@@ -49,7 +49,7 @@ python3 -m pip install requests
 macOS / Linux 终端执行：
 
 ```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/Songxiaor/syc-audio-to-text/main/install.sh)"
+tmp="$(mktemp -d)" && git clone https://github.com/Songxiaor/syc-audio-to-text.git "$tmp/syc-audio-to-text" && bash "$tmp/syc-audio-to-text/install.sh"
 ```
 
 安装后配置 API Key：
