@@ -29,6 +29,37 @@ python3 -m pip install requests
 
 ## 安装
 
+### 方式一：发给 Codex / Claude Code / 任意 Agent 的安装 Prompt
+
+把下面这段话发给你的本地 Agent：
+
+```text
+请帮我安装这个 GitHub Skill：https://github.com/Songxiaor/syc-audio-to-text
+
+要求：
+1. 克隆仓库到临时目录。
+2. 运行仓库里的 install.sh。
+3. 默认安装到 ~/.codex/skills/syc-audio-to-text；如果当前客户端使用其他 Skill 目录，请安装到对应目录。
+4. 安装完成后运行 bash ~/.codex/skills/syc-audio-to-text/run.sh --check 检查依赖。
+5. 不要让我在聊天里明文发送 API Key；让我用 --configure-key 在本机隐藏输入并写入 ~/.stepfun.env。
+```
+
+### 方式二：一条命令安装
+
+macOS / Linux 终端执行：
+
+```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Songxiaor/syc-audio-to-text/main/install.sh)"
+```
+
+安装后配置 API Key：
+
+```bash
+bash ~/.codex/skills/syc-audio-to-text/run.sh --configure-key
+```
+
+### 方式三：手动安装
+
 克隆仓库：
 
 ```bash
@@ -204,7 +235,9 @@ bash ~/.codex/skills/syc-audio-to-text/run.sh \
 
 ## 在 Codex / Claude Code 中使用
 
-安装后，你可以直接对 Agent 说：
+### 桌面端使用方式
+
+安装后，你可以直接对 Codex、Claude Code 或其他本地 Agent 说：
 
 ```text
 用 syc-audio-to-text 转写这个 YouTube 链接：https://...
@@ -220,6 +253,20 @@ bash ~/.codex/skills/syc-audio-to-text/run.sh \
 
 ```text
 用 syc-audio-to-text 把这个视频链接下载到本地，不要转写。
+```
+
+### CLI 工具使用方式
+
+直接调用：
+
+```bash
+bash ~/.codex/skills/syc-audio-to-text/run.sh --help
+```
+
+常用形式：
+
+```bash
+bash ~/.codex/skills/syc-audio-to-text/run.sh --input "<file-or-url>" --output ~/Desktop/transcript.md --format md
 ```
 
 ## 支持的平台
@@ -266,10 +313,12 @@ bash ~/.codex/skills/syc-audio-to-text/run.sh --input ~/Downloads/video.mp4 --dr
 python3 ~/.codex/skills/syc-audio-to-text/Tools/verify_local.py
 ```
 
-## 安全说明
+## API Key 与安全
 
-- 不要把 `~/.stepfun.env` 提交到 Git。
-- 不要把 API Key 写进 README、脚本或聊天记录。
-- 本项目 `.gitignore` 已忽略常见 `.env` 文件。
-- `--check` 只显示 API Key 是否存在和长度，不会打印密钥内容。
-
+- 本项目不包含任何 StepFun API Key。
+- 你的 API Key 只需要保存在本机 `~/.stepfun.env`，不需要写进仓库文件。
+- 推荐使用 `--configure-key` 配置密钥，因为输入过程不会在终端显示。
+- `~/.stepfun.env` 会被设置为 `600` 权限，只允许当前用户读取。
+- `.gitignore` 已忽略常见 `.env` 文件，避免误提交本地密钥配置。
+- `--check` 只显示 API Key 是否已配置和长度，不会打印密钥内容。
+- 如果你 fork 或二次开发，请不要把真实 API Key 写进 README、脚本、Issue 或 PR。
