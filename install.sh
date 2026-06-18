@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"
+SOURCE_DIR="$(cd "$(dirname "$SCRIPT_PATH")" >/dev/null 2>&1 && pwd || pwd)"
 REPO_URL="${SYC_AUDIO_TO_TEXT_REPO:-https://github.com/Songxiaor/syc-audio-to-text.git}"
 
 if [[ ! -f "$SOURCE_DIR/SKILL.md" || ! -f "$SOURCE_DIR/run.sh" ]]; then
