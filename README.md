@@ -36,14 +36,7 @@ brew install python@3.11 ffmpeg git
 ```text
 请帮我安装这个 GitHub Skill：https://github.com/Songxiaor/syc-audio-to-text
 
-要求：
-1. 克隆仓库到临时目录。
-2. 运行仓库里的 install.sh。
-3. 确认 install.sh 已经在 Skill 目录里创建独立 .venv，并在里面安装 requests 和最新版 yt-dlp。
-4. 默认安装到 ~/.codex/skills/syc-audio-to-text；如果当前客户端使用其他 Skill 目录，请安装到对应目录。
-5. 安装完成后运行 bash ~/.codex/skills/syc-audio-to-text/run.sh --check 检查依赖。
-6. 检查 --check 输出里的 python 和 yt-dlp 路径，必须指向 ~/.codex/skills/syc-audio-to-text/.venv/bin/，不要继续使用系统旧 yt-dlp。
-7. 不要让我在聊天里明文发送 API Key；让我用 --configure-key 在本机隐藏输入并写入 ~/.stepfun.env。
+请执行仓库里的 install.sh 完成安装。安装完成后，按安装脚本输出的 run.sh 路径运行 --configure-key 配置我自己的 StepFun API Key，再运行 --check 检查依赖。不要让我在聊天里明文发送 API Key。
 ```
 
 ### 方式二：一条命令安装
@@ -60,11 +53,13 @@ tmp="$(mktemp -d)" && git clone https://github.com/Songxiaor/syc-audio-to-text.g
 bash ~/.codex/skills/syc-audio-to-text/run.sh --configure-key
 ```
 
-检查是否使用了 Skill 自带的 Python 和 `yt-dlp`：
+检查依赖：
 
 ```bash
 bash ~/.codex/skills/syc-audio-to-text/run.sh --check
 ```
+
+如果你安装到了自定义 Skill 目录，请以 `install.sh` 输出的 `run.sh` 路径为准。
 
 ### 方式三：手动安装
 
@@ -320,6 +315,16 @@ bash ~/.codex/skills/syc-audio-to-text/run.sh --input ~/Downloads/video.mp4 --dr
 # 本地验证
 python3 ~/.codex/skills/syc-audio-to-text/Tools/verify_local.py
 ```
+
+## 故障排查
+
+如果 YouTube 下载提示 `yt-dlp` 版本过低、Python 版本过旧，先运行：
+
+```bash
+bash ~/.codex/skills/syc-audio-to-text/run.sh --check
+```
+
+正常情况下，输出里的 `python` 和 `yt-dlp` 应该来自本次安装目录下的 `syc-audio-to-text/.venv/bin/`。如果不是，重新运行 `install.sh`，或按安装脚本输出的实际路径调用 `run.sh`。
 
 ## API Key 与安全
 
