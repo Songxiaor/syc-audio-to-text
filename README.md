@@ -15,17 +15,17 @@
 
 - macOS / Linux
 - Python 3.10+
+- `git`
 - `ffmpeg`
-- `yt-dlp`
-- Python 包：`requests`
 - StepFun Step Plan API Key
 
 macOS 可用 Homebrew 安装：
 
 ```bash
-brew install ffmpeg yt-dlp
-python3 -m pip install requests
+brew install python@3.11 ffmpeg git
 ```
+
+安装脚本会在 Skill 目录里创建独立 `.venv`，并在里面安装最新版 `requests` 和 `yt-dlp`。运行时会优先使用这个环境，避免新电脑 PATH 里的旧 Python / 旧 `yt-dlp` 导致 YouTube 下载失败或提示版本过低。
 
 ## 安装
 
@@ -56,6 +56,12 @@ tmp="$(mktemp -d)" && git clone https://github.com/Songxiaor/syc-audio-to-text.g
 
 ```bash
 bash ~/.codex/skills/syc-audio-to-text/run.sh --configure-key
+```
+
+检查是否使用了 Skill 自带的 Python 和 `yt-dlp`：
+
+```bash
+bash ~/.codex/skills/syc-audio-to-text/run.sh --check
 ```
 
 ### 方式三：手动安装
