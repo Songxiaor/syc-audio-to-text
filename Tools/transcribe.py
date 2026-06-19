@@ -45,12 +45,18 @@ def run(cmd: list[str], *, timeout: int = 600) -> subprocess.CompletedProcess:
 
 def run_check() -> int:
     status = get_config_status()
+    yt_dlp_path = shutil.which("yt-dlp") or "missing"
+    yt_dlp_version = "missing"
+    if yt_dlp_path != "missing":
+        version_result = run(["yt-dlp", "--version"], timeout=30)
+        if version_result.returncode == 0:
+            yt_dlp_version = version_result.stdout.strip()
     checks = [
-        ("python", True, sys.version.split()[0]),
+        ("python", True, f"{sys.version.split()[0]} ({sys.executable})"),
         ("requests", True, "ok"),
         ("ffmpeg", command_exists("ffmpeg"), shutil.which("ffmpeg") or "missing"),
         ("ffprobe", command_exists("ffprobe"), shutil.which("ffprobe") or "missing"),
-        ("yt-dlp", command_exists("yt-dlp"), shutil.which("yt-dlp") or "missing"),
+        ("yt-dlp", command_exists("yt-dlp"), f"{yt_dlp_version} ({yt_dlp_path})"),
         ("STEPFUN_API_KEY", status["api_key_configured"], f"configured length={status['api_key_length']}" if status["api_key_configured"] else "missing"),
     ]
     ok = True
