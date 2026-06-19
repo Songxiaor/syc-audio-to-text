@@ -39,9 +39,11 @@ brew install python@3.11 ffmpeg git
 要求：
 1. 克隆仓库到临时目录。
 2. 运行仓库里的 install.sh。
-3. 默认安装到 ~/.codex/skills/syc-audio-to-text；如果当前客户端使用其他 Skill 目录，请安装到对应目录。
-4. 安装完成后运行 bash ~/.codex/skills/syc-audio-to-text/run.sh --check 检查依赖。
-5. 不要让我在聊天里明文发送 API Key；让我用 --configure-key 在本机隐藏输入并写入 ~/.stepfun.env。
+3. 确认 install.sh 已经在 Skill 目录里创建独立 .venv，并在里面安装 requests 和最新版 yt-dlp。
+4. 默认安装到 ~/.codex/skills/syc-audio-to-text；如果当前客户端使用其他 Skill 目录，请安装到对应目录。
+5. 安装完成后运行 bash ~/.codex/skills/syc-audio-to-text/run.sh --check 检查依赖。
+6. 检查 --check 输出里的 python 和 yt-dlp 路径，必须指向 ~/.codex/skills/syc-audio-to-text/.venv/bin/，不要继续使用系统旧 yt-dlp。
+7. 不要让我在聊天里明文发送 API Key；让我用 --configure-key 在本机隐藏输入并写入 ~/.stepfun.env。
 ```
 
 ### 方式二：一条命令安装
