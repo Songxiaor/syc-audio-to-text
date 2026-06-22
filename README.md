@@ -8,7 +8,20 @@
 
 ---
 
-## ✨ 快速安装（10 秒）
+## 🤖 让 Agent 帮你安装（最快方式）
+
+把下面这段话复制发给你的 **Codex、Claude Code 或其他 AI Agent**：
+
+```text
+请帮我安装这个 GitHub Skill：https://github.com/Songxiaor/syc-audio-to-text
+请执行仓库里的 install.sh 完成安装。安装完成后，按安装脚本输出的 run.sh 路径运行 --configure-key 配置我自己的 StepFun API Key，再运行 --check 检查依赖。不要让我在聊天里明文发送 API Key。
+```
+
+Agent 会自动完成：克隆仓库 → 创建虚拟环境 → 安装依赖 → 提示你配置 Key。
+
+---
+
+## 🖥 终端安装（手动）
 
 打开终端，复制粘贴这一条命令：
 
