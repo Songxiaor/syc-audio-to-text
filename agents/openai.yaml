@@ -1,8 +1,0 @@
-interface:
-  display_name: "音频转文案"
-  short_description: "单个或批量音视频转写成文案"
-  brand_color: "#2563EB"
-  default_prompt: "Use $syc-audio-to-text to transcribe this audio, video, URL, or local media folder into transcripts."
-
-policy:
-  allow_implicit_invocation: true

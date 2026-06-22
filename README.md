@@ -1,162 +1,61 @@
-# Syc Audio to Text
+# syc-audio-to-text 🎤
 
-一个给 Codex、Claude Code 等本地 Agent 使用的音视频转文案 Skill。它可以把本地音视频文件、YouTube/Bilibili 等公开视频链接转成文字稿，也可以只下载视频到本地而不转写。
+> 给本地 AI Agent（Codex、Claude Code 等）用的音视频转文字技能。  
+> 支持 YouTube / B站 / 抖音等主流平台 URL 转写，也支持本地文件批量处理。
 
-## 功能
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://python.org)
+[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux-lightgrey)]()
 
-- 本地音频/视频转文字：`mp3`、`m4a`、`wav`、`mp4`、`mov`、`mkv` 等
-- URL 转文字：优先抓取平台字幕；没有字幕时下载音频并调用 StepFun Step Plan ASR
-- 批量转写本地文件夹，支持递归、跳过已有结果、失败后继续
-- 只下载在线视频到本地，默认保存为视频文件
-- 长音频自动切片，避免单次请求过大
-- 输出 `txt`、`md`、`json`
+---
 
-## 依赖
+## ✨ 快速安装（10 秒）
 
-- macOS / Linux
-- Python 3.10+
-- `git`
-- `ffmpeg`
-- StepFun Step Plan API Key
-
-macOS 可用 Homebrew 安装：
+打开终端，复制粘贴这一条命令：
 
 ```bash
-brew install python@3.11 ffmpeg git
+bash -c "$(curl -sL https://raw.githubusercontent.com/Songxiaor/syc-audio-to-text/main/install.sh)"
 ```
 
-安装脚本会在 Skill 目录里创建独立 `.venv`，并在里面安装最新版 `requests` 和 `yt-dlp`。运行时会优先使用这个环境，避免新电脑 PATH 里的旧 Python / 旧 `yt-dlp` 导致 YouTube 下载失败或提示版本过低。
+安装脚本会自动：
+1. 克隆仓库到 `~/.codex/skills/syc-audio-to-text`
+2. 创建独立 Python 虚拟环境
+3. 安装 `requests` 和 `yt-dlp`
+4. 检测 `ffmpeg` 是否就绪
 
-## 安装
+---
 
-### 方式一：发给 Codex / Claude Code / 任意 Agent 的安装 Prompt
-
-把下面这段话发给你的本地 Agent：
-
-```text
-请帮我安装这个 GitHub Skill：https://github.com/Songxiaor/syc-audio-to-text
-
-请执行仓库里的 install.sh 完成安装。安装完成后，按安装脚本输出的 run.sh 路径运行 --configure-key 配置我自己的 StepFun API Key，再运行 --check 检查依赖。不要让我在聊天里明文发送 API Key。
-```
-
-### 方式二：一条命令安装
-
-macOS / Linux 终端执行：
+## ✅ 验证安装
 
 ```bash
-tmp="$(mktemp -d)" && git clone https://github.com/Songxiaor/syc-audio-to-text.git "$tmp/syc-audio-to-text" && bash "$tmp/syc-audio-to-text/install.sh"
-```
-
-安装后配置 API Key：
-
-```bash
+# 第一步：配置 API Key（交互式，不会在屏幕显示密钥）
 bash ~/.codex/skills/syc-audio-to-text/run.sh --configure-key
-```
 
-检查依赖：
-
-```bash
+# 第二步：检查依赖和配置
 bash ~/.codex/skills/syc-audio-to-text/run.sh --check
-```
 
-如果你安装到了自定义 Skill 目录，请以 `install.sh` 输出的 `run.sh` 路径为准。
-
-### 方式三：手动安装
-
-克隆仓库：
-
-```bash
-git clone https://github.com/Songxiaor/syc-audio-to-text.git
-cd syc-audio-to-text
-```
-
-安装到 Codex Skill 目录：
-
-```bash
-bash install.sh
-```
-
-默认安装到：
-
-```bash
-~/.codex/skills/syc-audio-to-text
-```
-
-如果你使用自定义 Skill 目录：
-
-```bash
-SKILL_HOME="$HOME/.cc-switch/skills" bash install.sh
-```
-
-## 配置 API Key
-
-本仓库不会包含任何 API Key。安装后需要配置你自己的 StepFun Step Plan API Key。
-
-推荐用交互式配置：
-
-```bash
-bash ~/.codex/skills/syc-audio-to-text/run.sh --configure-key
-```
-
-这个命令会把密钥写入：
-
-```bash
-~/.stepfun.env
-```
-
-并设置权限为 `600`。
-
-你也可以手动创建：
-
-```bash
-cat > ~/.stepfun.env <<'EOF'
-STEPFUN_BASE_URL=https://api.stepfun.com/step_plan/v1
-STEPFUN_API_KEY=你的 StepFun API Key
-EOF
-chmod 600 ~/.stepfun.env
-```
-
-检查配置：
-
-```bash
-bash ~/.codex/skills/syc-audio-to-text/run.sh --check
-```
-
-真实 ASR 冒烟测试：
-
-```bash
+# 第三步：真实 ASR 冒烟测试（生成 2 秒音频 → 调用 API → 返回文字）
 bash ~/.codex/skills/syc-audio-to-text/run.sh --live-test
 ```
 
-## 使用方式
+> 💡 **没有 API Key？**  
+> 本技能使用 [StepFun Step Plan ASR](https://platform.stepfun.com/) 进行语音识别。  
+> 你需要去 StepFun 官网注册并申请 API Key。  
+> 或者将 `--asr-engine whisper` 参数传给 run.sh，使用本地 Whisper（需 `pip install openai-whisper`）。
 
-### 转写 YouTube / Bilibili 等链接
+---
+
+## 📖 快速上手
+
+### 转写 YouTube / B站 视频
 
 ```bash
 bash ~/.codex/skills/syc-audio-to-text/run.sh \
-  --input "https://www.youtube.com/watch?v=xxxx" \
+  --input "https://www.youtube.com/watch?v=xxx" \
   --output ~/Desktop/transcript.md \
   --format md
 ```
 
-流程：
-
-1. 先尝试抓取平台字幕。
-2. 如果没有可用字幕，下载音频。
-3. 调用 StepFun ASR 转写。
-4. 输出文字稿。
-
-强制跳过平台字幕，全部走 ASR：
-
-```bash
-bash ~/.codex/skills/syc-audio-to-text/run.sh \
-  --input "https://www.youtube.com/watch?v=xxxx" \
-  --output ~/Desktop/transcript.md \
-  --format md \
-  --no-subtitle
-```
-
-### 转写本地文件
+### 转写本地视频/音频
 
 ```bash
 bash ~/.codex/skills/syc-audio-to-text/run.sh \
@@ -165,17 +64,7 @@ bash ~/.codex/skills/syc-audio-to-text/run.sh \
   --format md
 ```
 
-长音频可调整切片长度：
-
-```bash
-bash ~/.codex/skills/syc-audio-to-text/run.sh \
-  --input ~/Downloads/long-audio.mp3 \
-  --output ~/Desktop/transcript.md \
-  --format md \
-  --chunk-minutes 15
-```
-
-### 批量转写本地文件夹
+### 批量转写整个文件夹
 
 ```bash
 bash ~/.codex/skills/syc-audio-to-text/run.sh \
@@ -187,151 +76,64 @@ bash ~/.codex/skills/syc-audio-to-text/run.sh \
   --continue-on-error
 ```
 
-只处理指定格式：
-
-```bash
-bash ~/.codex/skills/syc-audio-to-text/run.sh \
-  --input-dir ~/Downloads/media \
-  --output-dir ~/Desktop/transcripts \
-  --include "*.mp3,*.m4a,*.mp4"
-```
-
-批量模式会生成：
-
-```bash
-_batch_report.json
-```
-
-用于查看每个文件的处理结果。
-
 ### 只下载视频，不转写
 
 ```bash
 bash ~/.codex/skills/syc-audio-to-text/run.sh \
-  --input "https://www.youtube.com/watch?v=xxxx" \
+  --input "https://www.youtube.com/watch?v=xxx" \
   --download-only
 ```
 
-默认保存到：
+---
+
+## 🔧 进阶选项
+
+| 参数 | 作用 |
+|---|---|
+| `--format txt\|md\|json` | 输出格式，默认 txt |
+| `--language zh\|en\|auto` | ASR 语言，默认 zh |
+| `--asr-engine auto\|stepfun\|whisper` | ASR 引擎：auto（默认，StepFun 优先，失败自动降级 Whisper）、stepfun（仅 StepFun）、whisper（直接本地 Whisper） |
+| `--no-subtitle` | 跳过 URL 字幕抓取，强制走 ASR |
+| `--chunk-minutes 15` | 长音频切片分钟数，默认 25 |
+| `--include "*.mp3,*.mp4"` | 批量时按文件类型筛选 |
+| `--dry-run` | 只验证，不调用 ASR |
+| `--download-type video\|audio` | 下载类型 |
+| `--download-dir ~/Downloads` | 下载目录 |
+
+---
+
+## 🗑 卸载
 
 ```bash
-~/Downloads
+rm -rf ~/.codex/skills/syc-audio-to-text
+# 可选：删除 API Key 配置
+rm -f ~/.stepfun.env
 ```
 
-指定下载目录：
+---
 
-```bash
-bash ~/.codex/skills/syc-audio-to-text/run.sh \
-  --input "https://www.youtube.com/watch?v=xxxx" \
-  --download-only \
-  --download-dir ~/Downloads
-```
+## 在 AI Agent 中使用
 
-只下载音频：
+安装后，直接对你的 Agent（Codex、Claude Code、NewMax 等）说：
 
-```bash
-bash ~/.codex/skills/syc-audio-to-text/run.sh \
-  --input "https://www.youtube.com/watch?v=xxxx" \
-  --download-only \
-  --download-type audio
-```
+> 用 syc-audio-to-text 转写这个视频链接：https://...
+> 用 syc-audio-to-text 批量转写这个文件夹
+> 用 syc-audio-to-text 把这个视频下载到本地
 
-## 在 Codex / Claude Code 中使用
+Agent 会自动调用 `run.sh` 完成工作。
 
-### 桌面端使用方式
+---
 
-安装后，你可以直接对 Codex、Claude Code 或其他本地 Agent 说：
+## 支持平台
 
-```text
-用 syc-audio-to-text 转写这个 YouTube 链接：https://...
-```
+由 `yt-dlp` 驱动，支持 YouTube、Bilibili、抖音、TikTok、小红书、微博、X/Twitter、Instagram、Facebook、Vimeo、SoundCloud、Apple Podcasts、喜马拉雅、AcFun、优酷、爱奇艺、Zoom、Loom 等。  
+部分平台需要登录态或 Cookie。
 
-或者：
+---
 
-```text
-用 syc-audio-to-text 批量转写这个文件夹里的视频，输出成 Markdown。
-```
+## 安全说明
 
-或者：
-
-```text
-用 syc-audio-to-text 把这个视频链接下载到本地，不要转写。
-```
-
-### CLI 工具使用方式
-
-直接调用：
-
-```bash
-bash ~/.codex/skills/syc-audio-to-text/run.sh --help
-```
-
-常用形式：
-
-```bash
-bash ~/.codex/skills/syc-audio-to-text/run.sh --input "<file-or-url>" --output ~/Desktop/transcript.md --format md
-```
-
-## 支持的平台
-
-URL 能力来自 `yt-dlp`，所以支持范围取决于当前安装的 `yt-dlp` 版本。常见可用平台包括：
-
-- YouTube
-- Bilibili
-- Douyin
-- TikTok
-- Xiaohongshu
-- Weibo
-- X / Twitter
-- Instagram
-- Facebook
-- Vimeo
-- Dailymotion
-- Twitch
-- SoundCloud
-- Apple Podcasts
-- Ximalaya
-- AcFun
-- Youku
-- iQIYI
-- Zoom
-- Loom
-- Panopto
-
-部分平台可能需要登录态、Cookie、地区可访问性或公开视频权限。
-
-## 常用命令
-
-```bash
-# 查看帮助
-bash ~/.codex/skills/syc-audio-to-text/run.sh --help
-
-# 检查依赖和 API Key
-bash ~/.codex/skills/syc-audio-to-text/run.sh --check
-
-# 不调用 ASR，只验证媒体解析
-bash ~/.codex/skills/syc-audio-to-text/run.sh --input ~/Downloads/video.mp4 --dry-run
-
-# 本地验证
-python3 ~/.codex/skills/syc-audio-to-text/Tools/verify_local.py
-```
-
-## 故障排查
-
-如果 YouTube 下载提示 `yt-dlp` 版本过低、Python 版本过旧，先运行：
-
-```bash
-bash ~/.codex/skills/syc-audio-to-text/run.sh --check
-```
-
-正常情况下，输出里的 `python` 和 `yt-dlp` 应该来自本次安装目录下的 `syc-audio-to-text/.venv/bin/`。如果不是，重新运行 `install.sh`，或按安装脚本输出的实际路径调用 `run.sh`。
-
-## API Key 与安全
-
-- 本项目不包含任何 StepFun API Key。
-- 你的 API Key 只需要保存在本机 `~/.stepfun.env`，不需要写进仓库文件。
-- 推荐使用 `--configure-key` 配置密钥，因为输入过程不会在终端显示。
-- `~/.stepfun.env` 会被设置为 `600` 权限，只允许当前用户读取。
-- `.gitignore` 已忽略常见 `.env` 文件，避免误提交本地密钥配置。
-- `--check` 只显示 API Key 是否已配置和长度，不会打印密钥内容。
-- 如果你 fork 或二次开发，请不要把真实 API Key 写进 README、脚本、Issue 或 PR。
+- 本仓库不含任何 API Key
+- API Key 仅保存在 `~/.stepfun.env`（权限 600）
+- `--check` 只会显示 Key 是否已配置和长度，不会打印内容
+- `.gitignore` 已排除 `.env` 和 `.stepfun.env`

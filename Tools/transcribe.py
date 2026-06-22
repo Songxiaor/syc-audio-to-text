@@ -87,7 +87,7 @@ def configure_key() -> int:
     env_path.chmod(0o600)
     print(f"已写入：{env_path}")
     print("已设置文件权限：600")
-    print("可运行 `bash /Users/song/.cc-switch/skills/syc-audio-to-text/run.sh --check` 验证。")
+    print("可运行 `run.sh --check` 验证。")
     return 0
 
 
@@ -616,7 +616,7 @@ def run_live_test(args: argparse.Namespace) -> int:
     status = get_config_status()
     if not status["api_key_configured"]:
         print("缺少 STEPFUN_API_KEY，无法运行 live test。")
-        print("先运行：bash /Users/song/.cc-switch/skills/syc-audio-to-text/run.sh --configure-key")
+        print("先运行：run.sh --configure-key")
         return 1
 
     with tempfile.TemporaryDirectory() as tmp:

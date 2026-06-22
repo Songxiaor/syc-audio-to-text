@@ -16,3 +16,7 @@ tmp/
 temp/
 *.log
 
+# Personal agent configs
+agents/
+.venv/
+
