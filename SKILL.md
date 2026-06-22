@@ -1,6 +1,6 @@
 ---
 name: syc-audio-to-text
-description: Convert audio/video to transcripts, or download online videos. Use to transcribe, extract subtitles, or download YouTube/Bilibili/小宇宙 videos. Uses yt-dlp + StepFun ASR.
+description: Convert single or batch local audio/video files and online video URLs into transcripts, or download online videos directly to local storage, for Codex, Claude Code, and other shell-capable agents. Uses yt-dlp for subtitles/downloads, then StepFun Step Plan ASR (with automatic Whisper fallback) when speech recognition is needed.
 ---
 
 # Audio to Text
