@@ -7,79 +7,79 @@ Convert a local file or URL into a transcript.
 Local file:
 
 ```bash
-bash <SKILL_HOME>/syc-audio-to-text/run.sh --input "/path/to/video.mp4"
+bash /Users/song/.cc-switch/skills/syc-audio-to-text/run.sh --input "/path/to/video.mp4"
 ```
 
 URL:
 
 ```bash
-bash <SKILL_HOME>/syc-audio-to-text/run.sh --input "https://www.youtube.com/watch?v=..."
+bash /Users/song/.cc-switch/skills/syc-audio-to-text/run.sh --input "https://www.youtube.com/watch?v=..."
 ```
 
 Download URL video without transcription:
 
 ```bash
-bash <SKILL_HOME>/syc-audio-to-text/run.sh --input "https://www.youtube.com/watch?v=..." --download-only
+bash /Users/song/.cc-switch/skills/syc-audio-to-text/run.sh --input "https://www.youtube.com/watch?v=..." --download-only
 ```
 
 Download URL video to a custom folder:
 
 ```bash
-bash <SKILL_HOME>/syc-audio-to-text/run.sh --input "https://www.youtube.com/watch?v=..." --download-only --download-dir ~/Downloads
+bash /Users/song/.cc-switch/skills/syc-audio-to-text/run.sh --input "https://www.youtube.com/watch?v=..." --download-only --download-dir ~/Downloads
 ```
 
 Custom output:
 
 ```bash
-bash <SKILL_HOME>/syc-audio-to-text/run.sh --input "/path/to/audio.mp3" --output ~/Desktop/transcript.md --format md
+bash /Users/song/.cc-switch/skills/syc-audio-to-text/run.sh --input "/path/to/audio.mp3" --output ~/Desktop/transcript.md --format md
 ```
 
 Batch local media:
 
 ```bash
-bash <SKILL_HOME>/syc-audio-to-text/run.sh --input-dir "/path/to/media" --output-dir ~/Desktop/transcripts --format md
+bash /Users/song/.cc-switch/skills/syc-audio-to-text/run.sh --input-dir "/path/to/media" --output-dir ~/Desktop/transcripts --format md
 ```
 
 Batch recursively and skip existing outputs:
 
 ```bash
-bash <SKILL_HOME>/syc-audio-to-text/run.sh --input-dir "/path/to/media" --output-dir ~/Desktop/transcripts --format md --recursive --skip-existing --continue-on-error
+bash /Users/song/.cc-switch/skills/syc-audio-to-text/run.sh --input-dir "/path/to/media" --output-dir ~/Desktop/transcripts --format md --recursive --skip-existing --continue-on-error
 ```
 
 Batch selected formats:
 
 ```bash
-bash <SKILL_HOME>/syc-audio-to-text/run.sh --input-dir "/path/to/media" --output-dir ~/Desktop/transcripts --include "*.mp3,*.m4a,*.mp4"
+bash /Users/song/.cc-switch/skills/syc-audio-to-text/run.sh --input-dir "/path/to/media" --output-dir ~/Desktop/transcripts --include "*.mp3,*.m4a,*.mp4"
 ```
 
 No API validation:
 
 ```bash
-bash <SKILL_HOME>/syc-audio-to-text/run.sh --input "/path/to/video.mp4" --dry-run
+bash /Users/song/.cc-switch/skills/syc-audio-to-text/run.sh --input "/path/to/video.mp4" --dry-run
 ```
 
 Check dependencies and StepFun config:
 
 ```bash
-bash <SKILL_HOME>/syc-audio-to-text/run.sh --check
+bash /Users/song/.cc-switch/skills/syc-audio-to-text/run.sh --check
 ```
 
 Configure StepFun API key safely:
 
 ```bash
-bash <SKILL_HOME>/syc-audio-to-text/run.sh --configure-key
+bash /Users/song/.cc-switch/skills/syc-audio-to-text/run.sh --configure-key
 ```
 
 Run a real StepFun ASR smoke test:
 
 ```bash
-bash <SKILL_HOME>/syc-audio-to-text/run.sh --live-test
+bash /Users/song/.cc-switch/skills/syc-audio-to-text/run.sh --live-test
 ```
 
 Split long media into shorter ASR chunks:
 
 ```bash
-bash <SKILL_HOME>/syc-audio-to-text/run.sh --input "/path/to/long.mp3" --chunk-minutes 20
+bash /Users/song/.cc-switch/skills/syc-audio-to-text/run.sh --input "/path/to/long.mp3" --chunk-minutes 20
 ```
 
 ## Completion Response

@@ -19,22 +19,22 @@ Use this skill when the user asks for:
 
 ## Entry Point
 
-Prefer the shell entrypoint (replace `<SKILL_HOME>` with your skill install directory, e.g. `~/.codex/skills`):
+Prefer the shell entrypoint (adjust path to your install location):
 
 ```bash
-bash <SKILL_HOME>/syc-audio-to-text/run.sh --input "<file-or-url>"
+bash /Users/song/.cc-switch/skills/syc-audio-to-text/run.sh --input "<file-or-url>"
 ```
 
 Batch local media:
 
 ```bash
-bash <SKILL_HOME>/syc-audio-to-text/run.sh --input-dir "<media-folder>" --output-dir "<transcript-folder>" --format md
+bash /Users/song/.cc-switch/skills/syc-audio-to-text/run.sh --input-dir "<media-folder>" --output-dir "<transcript-folder>" --format md
 ```
 
 Download online video without transcription:
 
 ```bash
-bash <SKILL_HOME>/syc-audio-to-text/run.sh --input "<video-url>" --download-only
+bash /Users/song/.cc-switch/skills/syc-audio-to-text/run.sh --input "<video-url>" --download-only
 ```
 
 Useful options:
